@@ -1,0 +1,11 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    width: 200px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    align-items: center;
+}
+.viewBtn{
+    text-decoration: none;
+}
