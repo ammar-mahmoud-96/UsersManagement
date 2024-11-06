@@ -7,7 +7,7 @@ export default function UserDetails() {
   const { userID } = useParams();
   const [selecteditem, setSelecteditem] = useState();
 
-  const [isLoading] = useGetUsersList({
+  const { isLoading } = useGetUsersList({
     onSuccess: (data) => {
       const filteredItem = data?.filter(
         (item) => item.id.toString() === userID
@@ -15,8 +15,7 @@ export default function UserDetails() {
       setSelecteditem(filteredItem[0]);
     },
   });
-
-  console.log("userID", userID, selecteditem);
+  console.log("dddd", isLoading);
   return isLoading ? (
     <div>loading ...</div>
   ) : (

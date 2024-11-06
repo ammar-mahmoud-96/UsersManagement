@@ -10,7 +10,7 @@ export default function Editeuser() {
   const [lastNameInput, setlastNameInput] = useState();
   const [email, setEmail] = useState();
 
-  const [isLoading] = useGetUsersList({
+  const { isLoading } = useGetUsersList({
     onSuccess: (data) => {
       const filteredItem = data?.filter(
         (item) => item.id.toString() === userID

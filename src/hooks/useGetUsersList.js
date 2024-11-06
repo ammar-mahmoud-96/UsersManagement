@@ -21,5 +21,5 @@ export default function useGetUsersList({ onSuccess }) {
       });
   }, []);
 
-  return [usersList, isLoading];
+  return { usersList, isLoading };
 }

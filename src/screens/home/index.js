@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import styles from "./home.module.css";
 import UserItemComponent from "../../components/userItemComponent";
 import useGetUsersList from "../../hooks/useGetUsersList";
+import UsersTable from "../../components/usersTable";
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState("");
   const [filteredList, setFilteredList] = useState();
 
-  const [usersList, isLoading] = useGetUsersList({
+  const { usersList, isLoading } = useGetUsersList({
     onSuccess: (data) => {
       setFilteredList(data);
     },
@@ -29,9 +30,10 @@ export default function Home() {
   ) : (
     <div className={styles.container}>
       <input placeholder="search" value={searchValue} onChange={handleSearch} />
-      {filteredList?.map((user) => {
+      {filteredList && <UsersTable usersList={filteredList} />}
+      {/* {filteredList?.map((user) => {
         return <UserItemComponent key={user.id} user={user} />;
-      })}
+      })} */}
     </div>
   );
 }
