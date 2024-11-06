@@ -1,29 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./home.module.css";
 import UserItemComponent from "../../components/userItemComponent";
+import useGetUsersList from "../../hooks/useGetUsersList";
 
 export default function Home() {
-  const [usersList, setUsersList] = useState([]);
-  useEffect(() => {
-    fetch("https://reqres.in/api/users")
-      .then((response) => response.json())
-      .then((res) => {
-        setUsersList(res.data);
-        // console.log("dddd", res.data);
-      });
-  }, []);
-
-  console.log("in hbome", usersList);
-  return (
+  const [usersList, isLoading] = useGetUsersList({});
+  return isLoading ? (
+    <div> loading ...</div>
+  ) : (
     <div className={styles.container}>
-      {usersList.map((user) => {
-        return (
-          <UserItemComponent key={user.id} user={user} />
-          // <div>
-          //   <p>{`${user.first_name} ${user.last_name}`}</p>
-          //   <button>edit</button>
-          // </div>
-        );
+      {usersList?.map((user) => {
+        return <UserItemComponent key={user.id} user={user} />;
       })}
     </div>
   );

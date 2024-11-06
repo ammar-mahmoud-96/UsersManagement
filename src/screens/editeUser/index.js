@@ -1,37 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import useGetUsersList from "../../hooks/useGetUsersList";
 
 export default function Editeuser() {
   const { userID } = useParams();
   const [selecteditem, setSelecteditem] = useState();
-  const [isLoading, setIsLoading] = useState(false);
 
   const [firstNameInput, setFirstNameInput] = useState();
   const [lastNameInput, setlastNameInput] = useState();
   const [email, setEmail] = useState();
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetch("https://reqres.in/api/users")
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res.data);
-        const filteredItem = res?.data?.filter(
-          (item) => item.id.toString() === userID
-        );
-        console.log("filteredItem", filteredItem);
-        setSelecteditem(filteredItem[0]);
-        setFirstNameInput(filteredItem[0].first_name);
-        setlastNameInput(filteredItem[0].last_name);
-        setEmail(filteredItem[0].email);
-      })
-      .catch((e) => {
-        // error handling
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+  const [isLoading] = useGetUsersList({
+    onSuccess: (data) => {
+      const filteredItem = data?.filter(
+        (item) => item.id.toString() === userID
+      );
+      setSelecteditem(filteredItem[0]);
+      setFirstNameInput(filteredItem[0].first_name);
+      setlastNameInput(filteredItem[0].last_name);
+      setEmail(filteredItem[0].email);
+    },
+  });
+
   console.log("firstNameInput", firstNameInput);
   const onClickSubmit = () => {
     const requestOptions = {

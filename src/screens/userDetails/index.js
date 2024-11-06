@@ -1,31 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "./userDetails.module.css";
+import useGetUsersList from "../../hooks/useGetUsersList";
 
 export default function UserDetails() {
   const { userID } = useParams();
   const [selecteditem, setSelecteditem] = useState();
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetch("https://reqres.in/api/users")
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res.data);
-        const filteredItem = res?.data?.filter(
-          (item) => item.id.toString() === userID
-        );
-        console.log("filteredItem", filteredItem);
-        setSelecteditem(filteredItem[0]);
-      })
-      .catch((e) => {
-        // error handling
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+  const [isLoading] = useGetUsersList({
+    onSuccess: (data) => {
+      const filteredItem = data?.filter(
+        (item) => item.id.toString() === userID
+      );
+      setSelecteditem(filteredItem[0]);
+    },
+  });
+
   console.log("userID", userID, selecteditem);
   return isLoading ? (
     <div>loading ...</div>
